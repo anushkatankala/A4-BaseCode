@@ -1,5 +1,6 @@
 //Class representing an AutoPark
 //has an array of items that represent the products the auto park can sell
+import java.util.*;
 
 public class AutoPark{
     private final int MAX_ITEMS = 10;
@@ -27,6 +28,16 @@ public class AutoPark{
             return true;
         }
         return false;
+    }
+
+    public List<Item> getItemList(){
+        List<Item> itemList = new ArrayList<>();
+        for (Item i: items){
+            if(i != null){
+                itemList.add(i);
+            }
+        }
+        return itemList;
     }
     
 
