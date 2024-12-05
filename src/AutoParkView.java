@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import java.util.*;
 
 import java.util.Map;
 
@@ -72,15 +73,31 @@ public class AutoParkView extends Pane {
         setPrefSize(800,400);
     }
 
-    public void update(AutoPark model){
+    public void update(AutoPark model, Map<Integer, Item> cart){
         ObservableList<String> listOfInv = FXCollections.observableArrayList();
         ObservableList<String> listOfCart = FXCollections.observableArrayList();
         ObservableList<String> listOfPopular = FXCollections.observableArrayList();
 
+        if (model == null){
+
+        }
         for (int i = 0; i < model.getTotalItem(); i++){
             Item select = model.getItemList().get(i);
             listOfInv.add(select.toString());
         }
+        invList.setItems(listOfInv);
+
+        for (Map.Entry<Integer, Item> c : cart.entrySet()){
+            listOfCart.add(c.getKey() + " x" + c.getValue().toString());
+        }
+        cartList.setItems(listOfCart);
+
+        List<Item> sorting = new ArrayList<>(model.getItemList());
+        sorting.sort((i1, i2) -> Integer.compare(i2.getSoldQuantity(), i1.getSoldQuantity()));
+        for (int i = 0; i < 3; i++){
+            listOfPopular.add(sorting.get(i).toString());
+        }
+        popularList.setItems(listOfPopular);
 
     }
 }

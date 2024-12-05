@@ -7,7 +7,7 @@ import javafx.event.*;
 import java.util.*;
 
 public class AutoParkApp extends Application{
-    private AutoParkApp model;
+    private AutoPark model;
     private Map<Integer, Item> cart;
 
     public AutoParkApp(){
@@ -31,7 +31,7 @@ public class AutoParkApp extends Application{
         primaryStage.setScene(new Scene(aPane));
         primaryStage.show();
 
-        //view.update(model);
+        view.update(model, cart);
     }
     public static void main(String[] args){
         launch(args);
