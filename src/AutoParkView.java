@@ -14,43 +14,50 @@ public class AutoParkView extends Pane {
     private ListView<String> invList;
     private ListView<String> cartList;
     private ListView<String> popularList;
-    public Button addButton;
-    public Button removeButton;
-    public Button completeButton;
-    public Button resetButton;
+    private Button addButton;
+    private Button removeButton;
+    private Button completeButton;
+    private Button resetButton;
+    private Label currentCartLabel;
+    private TextField salesText;
+    private TextField revText;
+    private TextField avgSaleText;
 
     public ListView<String> getInvList() {
         return invList;
     }
-
     public ListView<String> getCartList() {
         return cartList;
     }
-
     public ListView<String> getPopularList() {
         return popularList;
     }
-
     public Button getAddButton(){
         return addButton;
     }
-
     public Button getRemoveButton(){
         return removeButton;
     }
-
     public Button getCompleteButton(){
         return completeButton;
     }
-
     public Button getResetButton(){
         return resetButton;
+    }
+    public TextField getSalesText(){
+        return salesText;
+    }
+    public TextField getRevText(){
+        return revText;
+    }
+    public TextField getAvgSaleText(){
+        return avgSaleText;
     }
 
     public AutoParkView(){
         Label parkInvLabel = new Label("Park Inventory:");
         parkInvLabel.relocate(20,10);
-        Label currentCartLabel = new Label("Current Cart: ($0.0)" );
+        currentCartLabel = new Label("Current Cart: ($0.0)");
         currentCartLabel.relocate(300,10);
         Label parkSumLabel = new Label("Park Summary:");
         parkSumLabel.relocate(590,10);
@@ -89,17 +96,17 @@ public class AutoParkView extends Pane {
         resetButton.relocate(630,360);
         resetButton.setPrefSize(120,20);
 
-        TextField salesText = new TextField();
+        salesText = new TextField();
         salesText.setEditable(false);
         salesText.setText("0");
         salesText.relocate(670,40);
         salesText.setPrefSize(110,20);
-        TextField revText = new TextField();
+        revText = new TextField();
         revText.setEditable(false);
         revText.setText("0.0");
         revText.relocate(670,70);
         revText.setPrefSize(110,20);
-        TextField avgSaleText = new TextField();
+        avgSaleText = new TextField();
         avgSaleText.setEditable(false);
         avgSaleText.setText("N/A");
         avgSaleText.relocate(670,100);
@@ -111,15 +118,16 @@ public class AutoParkView extends Pane {
         setPrefSize(800,400);
     }
 
-    public void update(AutoPark model, Map<Item, Integer> cart){
+    public void update(AutoPark model, Map<Item, Integer> cart, double cartTotal){
         ObservableList<String> listOfInv = FXCollections.observableArrayList();
         ObservableList<String> listOfCart = FXCollections.observableArrayList();
         ObservableList<String> listOfPopular = FXCollections.observableArrayList();
 
         for (Item item : model.getItemList()){
-            if (item != null) {
-                listOfInv.add(item.toString());
+            if (item.getInvQuantity() == cart.getOrDefault(item,0)) {
+                continue;
             }
+            listOfInv.add(item.toString());
         }
         //invList.getItems().clear();
         invList.setItems(listOfInv);
@@ -137,6 +145,8 @@ public class AutoParkView extends Pane {
         }
         popularList.setItems(listOfPopular);
 
+        currentCartLabel.setText("Current Cart: ($" + cartTotal + ")");
+        completeButton.setDisable(cart.isEmpty());
 
     }
 }
