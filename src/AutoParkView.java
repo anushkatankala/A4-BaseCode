@@ -29,9 +29,6 @@ public class AutoParkView extends Pane {
     public ListView<String> getCartList() {
         return cartList;
     }
-    public ListView<String> getPopularList() {
-        return popularList;
-    }
     public Button getAddButton(){
         return addButton;
     }
@@ -112,7 +109,6 @@ public class AutoParkView extends Pane {
         avgSaleText.relocate(670,100);
         avgSaleText.setPrefSize(110,20);
 
-
         getChildren().addAll(parkInvLabel,currentCartLabel,parkSumLabel,numSalesLabel,revLabel,avgSaleLabel,mostPopularLabel,invList,cartList,popularList,salesText,revText,avgSaleText,addButton,removeButton,completeButton,resetButton);
 
         setPrefSize(800,400);
@@ -129,13 +125,11 @@ public class AutoParkView extends Pane {
             }
             listOfInv.add(item.toString());
         }
-        //invList.getItems().clear();
         invList.setItems(listOfInv);
 
         for (Map.Entry<Item, Integer> c : cart.entrySet()){
             listOfCart.add(c.getValue() + " x " + c.getKey().toString());
         }
-        //cartList.getItems().clear();
         cartList.setItems(listOfCart);
 
         List<Item> sorting = new ArrayList<>(model.getItemList());

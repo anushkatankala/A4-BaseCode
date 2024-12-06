@@ -22,22 +22,14 @@ public class AutoParkApp extends Application{
         avgSaleTotal = 0.0;
     }
 
-    public double getCartTotal(){
-        return cartTotal;
-    }
-
     public Map<Item,Integer> getCart(){
         return cart;
     }
 
     public void start(Stage primaryStage){
         Pane aPane = new Pane();
-
         AutoParkView view = new AutoParkView();
-
-
         aPane.getChildren().add(view);
-
         cart = new HashMap<>();
 
         primaryStage.setTitle("VroomVille Vehicle Haven - Sales and Inventory");
@@ -84,8 +76,6 @@ public class AutoParkApp extends Application{
             public void handle(MouseEvent mouseEvent) {
                 String selectedItem = view.getCartList().getSelectionModel().getSelectedItem();
                 view.getRemoveButton().setDisable(selectedItem == null || getCart().isEmpty());
-                //view.getCompleteButton().setDisable(getCart().isEmpty());
-                //view.update(model, cart, cartTotal);
             }
         });
 
@@ -93,24 +83,20 @@ public class AutoParkApp extends Application{
             @Override
             public void handle(ActionEvent actionEvent) {
                 String selectedItem = view.getCartList().getSelectionModel().getSelectedItem();
-
                 //if (selectedItem != null) { // Null check for selectedItem
                     for (Item i : model.getItemList()) {
                         if (selectedItem.split(" ", 3)[2].equals(i.toString())) {
                             cart.put(i, cart.get(i) - 1);
-
                             // Remove the item if quantity reaches 0
                             if (cart.get(i) == 0) {
                                 cart.remove(i);
                             }
-
                             view.getRemoveButton().setDisable(true);
                             cartTotal -= i.getPrice();
                             view.update(model, cart, cartTotal);
                             break;
                         }
                     }
-               // }
             }
         });
 
