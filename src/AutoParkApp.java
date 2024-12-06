@@ -58,8 +58,9 @@ public class AutoParkApp extends Application{
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         for (Item i: model.getItemList()){
-                            if (view.getInvList().getSelectionModel().getSelectedItem().equals(i.toString()) & i.getInvQuantity() > cart.getOrDefault(i,0)){
+                            if (view.getInvList().getSelectionModel().getSelectedItem().equals(i.toString()) && i.getInvQuantity() > cart.getOrDefault(i,0)){
                                 cart.put(i, cart.getOrDefault(i,0)+1);
+
                                 if (i.getInvQuantity() == cart.get(i)){
                                     for (int j = 0; j < model.getTotalItem(); j++){
                                         if (model.getItems()[j] == i){
@@ -75,29 +76,41 @@ public class AutoParkApp extends Application{
                 });
             }
         });
+
+
+        // Enable/Disable Remove Button Based on Cart Selection
         view.getCartList().setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (!getCart().isEmpty()){
-                    view.getRemoveButton().setDisable(false);
-                }
-                else {
-                    view.getRemoveButton().setDisable(true);
-                }
-                view.getRemoveButton().setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        for (Item i: model.getItemList()){
-                            if (i.toString().equals(view.getCartList().getSelectionModel().getSelectedItem())){
-                                cart.put(i, cart.getOrDefault(i,0)-1);
-                                //cart.get(i) = cart.get(i) - 1;
-                                view.update(model, cart);
-                            }
-                        }
-                    }
-                });
+                String selectedItem = view.getCartList().getSelectionModel().getSelectedItem();
+                view.getRemoveButton().setDisable(selectedItem == null || getCart().isEmpty());
             }
         });
+
+        view.getRemoveButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String selectedItem = view.getCartList().getSelectionModel().getSelectedItem();
+
+                //if (selectedItem != null) { // Null check for selectedItem
+                    for (Item i : model.getItemList()) {
+                        if (selectedItem.split(" ", 3)[2].equals(i.toString())) {
+                            cart.put(i, cart.get(i) - 1);
+
+                            // Remove the item if quantity reaches 0
+                            if (cart.get(i) == 0) {
+                                cart.remove(i);
+                            }
+
+                            view.getRemoveButton().setDisable(true);
+                            view.update(model, cart);
+                            break;
+                        }
+                    }
+               // }
+            }
+        });
+
     }
     public static void main(String[] args){
         launch(args);

@@ -126,6 +126,7 @@ public class AutoParkView extends Pane {
         for (Map.Entry<Item, Integer> c : cart.entrySet()){
             listOfCart.add(c.getValue() + " x " + c.getKey().toString());
         }
+        //cartList.getItems().clear();
         cartList.setItems(listOfCart);
 
         List<Item> sorting = new ArrayList<>(model.getItemList());
