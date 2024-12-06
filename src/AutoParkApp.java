@@ -40,7 +40,7 @@ public class AutoParkApp extends Application{
 
         cart = new HashMap<>();
 
-        primaryStage.setTitle("VroomVille Vehicle Haven - Sale and Inventory");
+        primaryStage.setTitle("VroomVille Vehicle Haven - Sales and Inventory");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(aPane));
         primaryStage.show();
@@ -130,8 +130,8 @@ public class AutoParkApp extends Application{
                 cart.clear();
                 numSalesTotal += 1;
                 avgSaleTotal = revTotal / numSalesTotal;
-                view.getAvgSaleText().setText("$"+avgSaleTotal);
-                view.getRevText().setText("$"+revTotal);
+                view.getAvgSaleText().setText(""+avgSaleTotal);
+                view.getRevText().setText(""+revTotal);
                 view.getSalesText().setText(""+numSalesTotal);
                 view.update(model, cart, cartTotal);
             }
