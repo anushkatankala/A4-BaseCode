@@ -52,28 +52,32 @@ public class AutoParkApp extends Application{
         view.getInvList().setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                view.getAddButton().setDisable(false);
+                String selectedItem = view.getInvList().getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    view.getAddButton().setDisable(false); // Enable add button when an item is selected
+                } else {
+                    view.getAddButton().setDisable(true); // Disable add button if nothing is selected
+                }
+            }
+        });
 
-                view.getAddButton().setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        for (Item i: model.getItemList()){
-                            if (view.getInvList().getSelectionModel().getSelectedItem().equals(i.toString()) && i.getInvQuantity() > cart.getOrDefault(i,0)){
-                                cart.put(i, cart.getOrDefault(i,0)+1);
-
-                                if (i.getInvQuantity() == cart.get(i)){
-                                    for (int j = 0; j < model.getTotalItem(); j++){
-                                        if (model.getItems()[j] == i){
-                                            model.getItems()[j] = null;
-                                            break;
-                                        }
-                                    }
-                                }
-                                view.update(model, cart);
+        // Add button handler
+        view.getAddButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String selectedItem = view.getInvList().getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    for (Item i : model.getItemList()) {
+                        if (selectedItem.equals(i.toString()) && i.getInvQuantity() > cart.getOrDefault(i, 0)) {
+                            cart.put(i, cart.getOrDefault(i, 0) + 1); // Add to cart
+                            if (i.getInvQuantity() == cart.get(i)) {
+                                i.setInvQuantity(0); // Set quantity to 0 when added completely
                             }
+                            view.update(model, cart); // Update the view
+                            break; // Exit after adding the item
                         }
                     }
-                });
+                }
             }
         });
 

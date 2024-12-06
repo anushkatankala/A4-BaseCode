@@ -121,6 +121,7 @@ public class AutoParkView extends Pane {
                 listOfInv.add(item.toString());
             }
         }
+        //invList.getItems().clear();
         invList.setItems(listOfInv);
 
         for (Map.Entry<Item, Integer> c : cart.entrySet()){
