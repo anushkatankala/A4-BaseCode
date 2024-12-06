@@ -14,11 +14,43 @@ public class AutoParkView extends Pane {
     private ListView<String> invList;
     private ListView<String> cartList;
     private ListView<String> popularList;
+    public Button addButton;
+    public Button removeButton;
+    public Button completeButton;
+    public Button resetButton;
+
+    public ListView<String> getInvList() {
+        return invList;
+    }
+
+    public ListView<String> getCartList() {
+        return cartList;
+    }
+
+    public ListView<String> getPopularList() {
+        return popularList;
+    }
+
+    public Button getAddButton(){
+        return addButton;
+    }
+
+    public Button getRemoveButton(){
+        return removeButton;
+    }
+
+    public Button getCompleteButton(){
+        return completeButton;
+    }
+
+    public Button getResetButton(){
+        return resetButton;
+    }
 
     public AutoParkView(){
         Label parkInvLabel = new Label("Park Inventory:");
         parkInvLabel.relocate(20,10);
-        Label currentCartLabel = new Label("Current Cart:");
+        Label currentCartLabel = new Label("Current Cart: ($0.0)" );
         currentCartLabel.relocate(300,10);
         Label parkSumLabel = new Label("Park Summary:");
         parkSumLabel.relocate(590,10);
@@ -41,29 +73,35 @@ public class AutoParkView extends Pane {
         popularList.relocate(590,150);
         popularList.setPrefSize(190,190);
 
-        Button addButton = new Button("Add to Cart");
+        addButton = new Button("Add to Cart");
         addButton.relocate(100,360);
         addButton.setPrefSize(120,20);
-        Button removeButton = new Button("Remove Item");
+        addButton.setDisable(true);
+        removeButton = new Button("Remove Item");
         removeButton.relocate(315,360);
         removeButton.setPrefSize(120,20);
-        Button completeButton = new Button("Complete Sale");
+        removeButton.setDisable(true);
+        completeButton = new Button("Complete Sale");
         completeButton.relocate(440,360);
         completeButton.setPrefSize(120,20);
-        Button resetButton = new Button("Reset Stock");
+        completeButton.setDisable(true);
+        resetButton = new Button("Reset Stock");
         resetButton.relocate(630,360);
         resetButton.setPrefSize(120,20);
 
         TextField salesText = new TextField();
         salesText.setEditable(false);
+        salesText.setText("0");
         salesText.relocate(670,40);
         salesText.setPrefSize(110,20);
         TextField revText = new TextField();
         revText.setEditable(false);
+        revText.setText("0.0");
         revText.relocate(670,70);
         revText.setPrefSize(110,20);
         TextField avgSaleText = new TextField();
         avgSaleText.setEditable(false);
+        avgSaleText.setText("N/A");
         avgSaleText.relocate(670,100);
         avgSaleText.setPrefSize(110,20);
 
@@ -73,22 +111,20 @@ public class AutoParkView extends Pane {
         setPrefSize(800,400);
     }
 
-    public void update(AutoPark model, Map<Integer, Item> cart){
+    public void update(AutoPark model, Map<Item, Integer> cart){
         ObservableList<String> listOfInv = FXCollections.observableArrayList();
         ObservableList<String> listOfCart = FXCollections.observableArrayList();
         ObservableList<String> listOfPopular = FXCollections.observableArrayList();
 
-        if (model == null){
-
-        }
-        for (int i = 0; i < model.getTotalItem(); i++){
-            Item select = model.getItemList().get(i);
-            listOfInv.add(select.toString());
+        for (Item item : model.getItemList()){
+            if (item != null) {
+                listOfInv.add(item.toString());
+            }
         }
         invList.setItems(listOfInv);
 
-        for (Map.Entry<Integer, Item> c : cart.entrySet()){
-            listOfCart.add(c.getKey() + " x" + c.getValue().toString());
+        for (Map.Entry<Item, Integer> c : cart.entrySet()){
+            listOfCart.add(c.getValue() + " x " + c.getKey().toString());
         }
         cartList.setItems(listOfCart);
 
@@ -98,6 +134,7 @@ public class AutoParkView extends Pane {
             listOfPopular.add(sorting.get(i).toString());
         }
         popularList.setItems(listOfPopular);
+
 
     }
 }

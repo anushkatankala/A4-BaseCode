@@ -13,7 +13,7 @@ public abstract class Item {
     //Returns the total revenue (price * amount) if there are at least amount items in stock
     //Return 0 otherwise (i.e., there is no sale completed)
     public double sellUnits(int amount){
-        if( amount > 0 && invQuantity >= amount){
+        if(amount > 0 && invQuantity >= amount){
             invQuantity -= amount;
             soldQuantity += amount;
             return amount * price;
@@ -26,4 +26,6 @@ public abstract class Item {
     public double getPrice() { return price; }
     public int getSoldQuantity() { return soldQuantity;}
     public int getInvQuantity() { return invQuantity; }
+    public void setInvQuantity(int amt){this.invQuantity = amt; }
+    public void setSoldQuantity(int amt){this.soldQuantity = amt;}
 }
