@@ -8,7 +8,6 @@ import java.util.*;
 
 public class AutoParkApp extends Application{
     private AutoPark model;
-    private final AutoPark model2;
     private Map<Item, Integer> cart;
     private double cartTotal;
     private int numSalesTotal;
@@ -17,7 +16,6 @@ public class AutoParkApp extends Application{
 
     public AutoParkApp(){
         model = AutoPark.createPark();
-        model2 = AutoPark.createPark();
         cartTotal = 0.0;
         numSalesTotal = 0;
         revTotal = 0.0;
@@ -142,7 +140,7 @@ public class AutoParkApp extends Application{
         view.getResetButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                model = model2;
+                model = AutoPark.createPark();
                 revTotal = 0.0;
                 avgSaleTotal = 0.0;
                 numSalesTotal = 0;
